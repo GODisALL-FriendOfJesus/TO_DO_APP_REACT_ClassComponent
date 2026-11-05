@@ -56,9 +56,34 @@ handToggleComplete= (id) =>{
                                 {isEditing ? (
                                     <div className='style.editRow'>
                                         <input type='text' value={editingText}
+                                        onChange={this.handleEditTextChange}
+                                        className='style.input'
+                                        autoFocus/>
 
                                     </div>
-                                )}
+                                ): (<>
+                    <span
+                      onClick={() => this.handleToggleComplete(todo.id)}
+                      
+                    >
+                      {todo.text}
+                    </span>
+                    <div  >
+                      <button
+                        onClick={() => this.handleStartEdit(todo)}
+                         
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => this.handleDeleteTodo(todo.id)}
+                         
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
 
                             </li>
                         )
