@@ -89,6 +89,18 @@ handleToggleComplete= (id) =>{
   handleEditTextChange = (e) => {
     this.setState({ editingText: e.target.value });
   };
+  //Change 5: Save edited todo
+  handleSaveEdit = (id) => {
+    const trimmed = this.state.editingText.trim();
+    if (!trimmed) return;
+    this.setState((prevState) => ({
+      todos: prevState.todos.map((todo) =>
+        todo.id === id ? { ...todo, text: trimmed } : todo
+      ),
+      editingId: null,
+      editingText: ''
+    }));
+  };
 
     render(){
         const {todos,inputValue,editingId,editingText}=this.state;
