@@ -72,6 +72,13 @@ handleToggleComplete= (id) =>{
         todo.id === id ? {...todo, completed: !todo.completed} : todo)
     }));
 };
+//add todo handler
+  handleDeleteTodo = (id) => {
+    this.setState((prevState) => ({
+      todos: prevState.todos.filter((todo) => todo.id !== id)
+    }));
+  };
+
 
 
     render(){
