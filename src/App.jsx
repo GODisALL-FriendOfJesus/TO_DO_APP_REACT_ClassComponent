@@ -131,8 +131,9 @@ handleToggleComplete= (id) =>{
                                         onChange={this.handleEditTextChange}
                                         className='style.input'
                                         autoFocus/>
-
-                                    </div>
+                                     <button onClick={() => this.handleSaveEdit(todo.id)}>Save</button>
+                      <button onClick={this.handleCancelEdit}>Cancel</button>
+                    </div>
                                 ): (<>
                     <span
                       onClick={() => this.handleToggleComplete(todo.id)}
