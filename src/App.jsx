@@ -78,7 +78,13 @@ handleToggleComplete= (id) =>{
       todos: prevState.todos.filter((todo) => todo.id !== id)
     }));
   };
-
+//Start editing handler
+  handleStartEdit = (todo) => {
+    this.setState({
+      editingId: todo.id,
+      editingText: todo.text
+    });
+  };
 
 
     render(){
