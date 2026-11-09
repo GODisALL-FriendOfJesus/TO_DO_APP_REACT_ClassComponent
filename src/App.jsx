@@ -20,7 +20,31 @@ componentDidMount() {
     }
   }
 
+// Change 10: Save todos to localStorage whenever state updates
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todos !== this.state.todos) {
+      localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
+  }
 
+  handleInputChange = (e) => {
+    this.setState({ inputValue: e.target.value });
+  };
+
+  handleAddTodo = (e) => {
+    e.preventDefault();
+    const trimmed = this.state.inputValue.trim();
+    if (!trimmed) return;
+    const newTodo = {
+      id: Date.now(),
+      text: trimmed,
+      completed: false
+    };
+    this.setState((prevState) => ({
+      todos: [...prevState.todos, newTodo],
+      inputValue: ''
+    }));
+  };
 
 //track changes
 handleInputChange = (e) =>{
