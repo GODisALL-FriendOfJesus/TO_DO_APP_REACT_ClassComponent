@@ -101,6 +101,13 @@ handleToggleComplete= (id) =>{
       editingText: ''
     }));
   };
+  //Cancel editing mode
+  handleCancelEdit = () => {
+    this.setState({
+      editingId: null,
+      editingText: ''
+    });
+  };
 
     render(){
         const {todos,inputValue,editingId,editingText}=this.state;
