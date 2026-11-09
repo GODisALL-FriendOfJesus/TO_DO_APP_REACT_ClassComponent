@@ -85,7 +85,10 @@ handleToggleComplete= (id) =>{
       editingText: todo.text
     });
   };
-
+  // Track edit input changes
+  handleEditTextChange = (e) => {
+    this.setState({ editingText: e.target.value });
+  };
 
     render(){
         const {todos,inputValue,editingId,editingText}=this.state;
