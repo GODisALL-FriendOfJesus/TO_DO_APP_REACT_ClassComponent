@@ -71,7 +71,7 @@ handleAddTodo = (e) =>{
     }));
 };
 //updates saved
-handleToggleComplet= (id) =>{
+handleToggleComplete= (id) =>{
     this.setState((prevState) =>({
         todos:prevState.todos.map((todo) =>
         todo.id === id ? {...todo, completed: !todo.completed} : todo)
