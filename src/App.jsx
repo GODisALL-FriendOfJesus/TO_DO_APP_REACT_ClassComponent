@@ -13,13 +13,14 @@
             editingText:''
         };
     }
+
 componentDidMount() {
     const savedTodos = localStorage.getItem('todos');
     if (savedTodos) {
       try {
         this.setState({ todos: JSON.parse(savedTodos) });
       } catch (error) {
-        console.error('Failed to parse todos from localStorage', error);
+        console.error('Failed to save todoLists localStorage', error);
       }
     }
   }
