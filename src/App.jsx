@@ -31,7 +31,7 @@ componentDidMount() {
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
     }
   }
-
+//this is tracking input changes if new characters intered in input text box
   handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
   };
