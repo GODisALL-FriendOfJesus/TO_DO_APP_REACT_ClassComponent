@@ -3,7 +3,11 @@
     constructor(props){
         super(props);
         this .state={
-            todos:[],
+            todos: [
+        { id: 1, text: 'IAmHere', completed: false },
+        { id: 2, text: 'reactjsexample.com', completed: false },
+        { id: 3, text: 'A To do app developed using to consolidate your knowledge about React', completed: false }
+      ],
             inputValue:'',
             editingId:null,
             editingText:''
