@@ -139,6 +139,10 @@ body {
 
 /* Delete / Cancel buttons */
 .listItem button:nth-child(even) {
-  background-color: #e74c3c;
-  color: white;
+  background-color: white;
+ height:16px;
+}
+img{
+    height:16px;
+    
 }

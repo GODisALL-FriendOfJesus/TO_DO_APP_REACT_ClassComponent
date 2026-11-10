@@ -157,7 +157,7 @@ handleToggleComplete= (id) =>{
                         onClick={() => this.handleDeleteTodo(todo.id)}
                          
                       >
-                        Delete
+                    <img src='../src/images/delete-icon.png'/>
                       </button>
                     </div>
                   </>
