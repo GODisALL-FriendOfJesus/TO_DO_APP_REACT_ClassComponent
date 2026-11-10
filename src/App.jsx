@@ -126,47 +126,60 @@ handleToggleComplete= (id) =>{
                 <button type='submit' className='style.addButton'>Add</button>
                 </form>
                  <ul className='style.list'>
-                    {todos.map((todo) => {
-                        const isEditing = editingId === todo.id;
-                        return(
-                            <li key={todo.id} className='style.listItem'>
-                                {isEditing ? (
-                                    <div className='style.editRow'>
-                                        <input type='text' value={editingText}
-                                        onChange={this.handleEditTextChange}
-                                        className='style.input'
-                                        autoFocus/>
-                                     <button onClick={() => this.handleSaveEdit(todo.id)}>Save</button>
-                      <button onClick={this.handleCancelEdit}>Cancel</button>
-                    </div>
-                                ): (<>
-                    <span
-                      onClick={() => this.handleToggleComplete(todo.id)}
-                      
-                    >
-                      {todo.text}
-                    </span>
-                    <div  >
-                      <button
-                        onClick={() => this.handleStartEdit(todo)}
-                         
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => this.handleDeleteTodo(todo.id)}
-                         
-                      >
-                    <img src='../src/images/delete-icon.png'/>
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                            </li>
-                        )
-
-                    })}
+                    {todos.length === 0 ? (
+            <div className="todo-empty-state">No tasks yet. Add one above!</div>
+          ) : (
+            <ul className="todo-list-container">
+              {todos.map((todo) => {
+                const isEditing = editingId === todo.id;
+                return (
+                  <li key={todo.id} className="todo-list-item">
+                    {isEditing ? (
+                      <div className="edit-row-box">
+                        <input
+                          type="text"
+                          value={editingText}
+                          onChange={this.handleEditTextChange}
+                          className="edit-input-field"
+                          autoFocus
+                        />
+                        <button onClick={() => this.handleSaveEdit(todo.id)} className="btn-save-task">Save</button>
+                        <button onClick={this.handleCancelEdit} className="btn-cancel-task">Cancel</button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="task-content-group" onDoubleClick={() => this.handleStartEdit(todo)}>
+                          <input
+                            type="checkbox"
+                            checked={todo.completed}
+                            onChange={() => this.handleToggleComplete(todo.id)}
+                            className="task-checkbox"
+                          />
+                          <span className={`task-text-label ${todo.completed ? 'completed' : ''}`}>
+                            {todo.text}
+                          </span>
+                        </div>
+                        <div className="task-action-group">
+                          <button 
+                            onClick={() => this.handleStartEdit(todo)} 
+                            className="btn-edit-task"
+                            title="Edit task"
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            onClick={() => this.handleDeleteTodo(todo.id)} 
+                            className="btn-delete-trash"
+                            title="Delete task"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </li>
+                );
+              })}
 
                  </ul>
             </div>
