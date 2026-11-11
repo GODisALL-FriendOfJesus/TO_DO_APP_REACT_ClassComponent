@@ -1,103 +1,95 @@
- import React,{Component} from 'react';
- class App extends Component{
-    constructor(props){
-        super(props);
-        this .state={
-            todos: [
+import React, { Component } from 'react';
+import './index.css';
+
+class App extends Component {
+  //  states in constructor are created here
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: [
         { id: 1, text: 'IAmHere', completed: false },
         { id: 2, text: 'reactjsexample.com', completed: false },
         { id: 3, text: 'A To do app developed using to consolidate your knowledge about React', completed: false }
       ],
-            inputValue:'',
-            editingId:null,
-            editingText:''
-        };
-    }
+      inputValue: '',
+      editingId: null,
+      editingText: ''
+    };
+  }
 
-componentDidMount() {
+  //   localStorage Load saved todos on mount & save on update
+  componentDidMount() {
     const savedTodos = localStorage.getItem('todos');
     if (savedTodos) {
       try {
         this.setState({ todos: JSON.parse(savedTodos) });
       } catch (error) {
-        console.error('Failed to save todoLists localStorage', error);
+        console.error('Failed to parse todos from localStorage', error);
       }
     }
   }
 
-// Change 10: Save todos to localStorage whenever state updates
   componentDidUpdate(prevProps, prevState) {
     if (prevState.todos !== this.state.todos) {
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
     }
   }
-//this is tracking input changes if new characters intered in input text box
+
+  //  implement Input Tracking Handler
   handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
   };
 
+  //  Implement Task Creation Handler (handleAddTodo)
   handleAddTodo = (e) => {
     e.preventDefault();
     const trimmed = this.state.inputValue.trim();
     if (!trimmed) return;
+
     const newTodo = {
       id: Date.now(),
       text: trimmed,
       completed: false
     };
+
     this.setState((prevState) => ({
       todos: [...prevState.todos, newTodo],
       inputValue: ''
     }));
   };
 
-//track changes
-handleInputChange = (e) =>{
-    this.setState({inputValue:e.target.value});
-};
-//add new item
-handleAddTodo = (e) =>{
-    e.preventDefault();
-    const trimmed=this.state.inputValue.trim();
-    if(!trimmed)return;
-    const newTodo={
-        id:Date.now(),
-        text:trimmed,
-        completed:false
-    };
+  // Completion Toggle Handler (Checkbox line-through cancel toggle)
+  handleToggleComplete = (id) => {
     this.setState((prevState) => ({
-        todos: [...prevState.todos,newTodo],
-        inputValue:''
+      todos: prevState.todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     }));
-};
-//updates saved
-handleToggleComplete= (id) =>{
-    this.setState((prevState) =>({
-        todos:prevState.todos.map((todo) =>
-        todo.id === id ? {...todo, completed: !todo.completed} : todo)
-    }));
-};
-//add todo handler
+  };
+
+  //  Task Deletion Handler (handleDeleteTodo)
   handleDeleteTodo = (id) => {
     this.setState((prevState) => ({
       todos: prevState.todos.filter((todo) => todo.id !== id)
     }));
   };
-//Start editing handler
+
+  // Inline Editing Handlers (Double-click to edit, save, cancel)
   handleStartEdit = (todo) => {
     this.setState({
       editingId: todo.id,
       editingText: todo.text
     });
   };
-  // Track edit input changes
+
   handleEditTextChange = (e) => {
     this.setState({ editingText: e.target.value });
   };
-  //Change 5: Save edited todo
+
   handleSaveEdit = (id) => {
     const trimmed = this.state.editingText.trim();
     if (!trimmed) return;
+
     this.setState((prevState) => ({
       todos: prevState.todos.map((todo) =>
         todo.id === id ? { ...todo, text: trimmed } : todo
@@ -106,7 +98,7 @@ handleToggleComplete= (id) =>{
       editingText: ''
     }));
   };
-  //Cancel editing mode
+
   handleCancelEdit = () => {
     this.setState({
       editingId: null,
@@ -114,19 +106,31 @@ handleToggleComplete= (id) =>{
     });
   };
 
-    render(){
-        const {todos,inputValue,editingId,editingText}=this.state;
-        return(
-            <div>
-            <div className='style.container'>
-                <h1>ToDo List</h1>
-                <form onSubmit={this.handleAddTodo} className='Style.form'>
-<input type='text' value={inputValue} onChange={this.handleInputChange} placeholder='Add a new task ...' className='style.input'/>
-                
-                <button type='submit' className='style.addButton'>Add</button>
-                </form>
-                 <ul className='style.list'>
-                    {todos.length === 0 ? (
+  render() {
+    const { todos, inputValue, editingId, editingText } = this.state;
+
+    return (
+      <div className="todo-app-wrapper">
+        {/*  Construct Render Layout & Faded Minimalist Title */}
+        <h1 className="main-title">todos</h1>
+
+        <div className="todo-container">
+          {/*Build Input Form Bar & Circular Add Button */}
+          <form onSubmit={this.handleAddTodo} className="todo-form">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={this.handleInputChange}
+              placeholder="Add todo..."
+              className="todo-input-field"
+            />
+            <button type="submit" className="add-btn-circle" title="Add todo">
+              +
+            </button>
+          </form>
+
+          {/* Task List with Checkbox Cancellation & Icon Actions */}
+          {todos.length === 0 ? (
             <div className="todo-empty-state">No tasks yet. Add one above!</div>
           ) : (
             <ul className="todo-list-container">
@@ -143,30 +147,35 @@ handleToggleComplete= (id) =>{
                           className="edit-input-field"
                           autoFocus
                         />
-                        <button onClick={() => this.handleSaveEdit(todo.id)} className="btn-save-task">Save</button>
-                        <button onClick={this.handleCancelEdit} className="btn-cancel-task">Cancel</button>
+                        {/* Icon-based Save & Cancel Actions */}
+                        <button onClick={() => this.handleSaveEdit(todo.id)} className="btn-icon-action save" title="Save">
+                          💾
+                        </button>
+                        <button onClick={this.handleCancelEdit} className="btn-icon-action cancel" title="Cancel">
+                          ❌
+                        </button>
                       </div>
                     ) : (
                       <>
-                        <div className="task-content-group" onDoubleClick={() => this.handleStartEdit(todo)}>
+                        <div className="task-content-group">
+                          {/* Checkbox controls  cancellation */}
                           <input
                             type="checkbox"
                             checked={todo.completed}
                             onChange={() => this.handleToggleComplete(todo.id)}
                             className="task-checkbox"
                           />
-                          <span className={`task-text-label ${todo.completed ? 'completed' : ''}`}>
+                          {/* Double-click text to with editing */}
+                          <span 
+                            className={`task-text-label ${todo.completed ? 'completed' : ''}`}
+                            onDoubleClick={() => this.handleStartEdit(todo)}
+                            title="Double-click to edit task"
+                          >
                             {todo.text}
                           </span>
                         </div>
                         <div className="task-action-group">
-                          <button 
-                            onClick={() => this.handleStartEdit(todo)} 
-                            className="btn-edit-task"
-                            title="Edit task"
-                          >
-                            Edit
-                          </button>
+                          {/* Icon-based Delete Action */}
                           <button 
                             onClick={() => this.handleDeleteTodo(todo.id)} 
                             className="btn-delete-trash"
@@ -180,11 +189,12 @@ handleToggleComplete= (id) =>{
                   </li>
                 );
               })}
+            </ul>
+          )}
+        </div>
+      </div>
+    );
+  }
+}
 
-                 </ul>
-            </div>
-            </div>
-        );
-    }
- }
- export default App;
+export default App;
